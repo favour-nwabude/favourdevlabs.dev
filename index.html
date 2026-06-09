@@ -6,113 +6,552 @@
   <title>FavourDevLabs — Android Consultant</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Lora:ital,wght@0,400;0,500;1,400&family=JetBrains+Mono:wght@300;400&display=swap" rel="stylesheet">
+
   <style>
+    /* ── VARIABLES ── */
     :root {
-      --bg:#09090a;--surface:#111113;--border:#22221f;--muted:#46443e;
-      --text:#ddd8cc;--light:#f0ebe0;--gold:#b8964a;--gold-dim:#7a6330;
-      --mono:'JetBrains Mono',monospace;--serif:'Cormorant Garamond',Georgia,serif;
-      --body:'Lora',Georgia,serif;
+      --bg:        #09090a;
+      --surface:   #111113;
+      --border:    #22221f;
+      --muted:     #46443e;
+      --text:      #ddd8cc;
+      --light:     #f0ebe0;
+      --gold:      #b8964a;
+      --gold-dim:  #7a6330;
+      --mono:      'JetBrains Mono', monospace;
+      --serif:     'Cormorant Garamond', Georgia, serif;
+      --body:      'Lora', Georgia, serif;
     }
-    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-    html{scroll-behavior:smooth}
-    body{background:var(--bg);color:var(--text);font-family:var(--body);font-size:17px;line-height:1.75;overflow-x:hidden}
-    body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E");opacity:0.03;pointer-events:none;z-index:999}
-    h1,h2,h3,h4{font-family:var(--serif);font-weight:300;color:var(--light)}
-    h1{font-size:clamp(3rem,9vw,7rem);line-height:1.05;letter-spacing:-0.02em}
-    h2{font-size:clamp(1.8rem,4vw,3rem);line-height:1.2}
-    h3{font-size:1.4rem;font-weight:400}
-    p{color:var(--text)}
-    a{color:var(--gold);text-decoration:none;transition:opacity 0.2s}
-    a:hover{opacity:0.7}
-    .ornament{display:flex;align-items:center;gap:1rem;margin:0.5rem 0}
-    .ornament::before,.ornament::after{content:'';flex:1;height:1px;background:linear-gradient(to right,transparent,var(--gold-dim))}
-    .ornament::after{background:linear-gradient(to left,transparent,var(--gold-dim))}
-    .ornament span{font-family:var(--serif);color:var(--gold);font-size:1.1rem;letter-spacing:0.1em}
-    .container{max-width:960px;margin:0 auto;padding:0 2rem}
-    section{padding:7rem 0}
-    section+section{border-top:1px solid var(--border)}
-    nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:1.4rem 2rem;display:flex;justify-content:space-between;align-items:center;background:rgba(9,9,10,0.85);backdrop-filter:blur(12px);border-bottom:1px solid var(--border)}
-    .nav-logo{font-family:var(--mono);font-size:0.8rem;letter-spacing:0.15em;color:var(--gold);text-transform:uppercase}
-    .nav-links{display:flex;gap:2.5rem;list-style:none}
-    .nav-links a{font-family:var(--mono);font-size:0.72rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);transition:color 0.2s}
-    .nav-links a:hover{color:var(--light);opacity:1}
-    #hero{min-height:100vh;display:flex;align-items:center;padding-top:5rem;border-top:none;position:relative}
-    .hero-inner{padding:0 2rem;max-width:960px;margin:0 auto;width:100%}
-    .hero-tag{font-family:var(--mono);font-size:0.72rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--gold);margin-bottom:2rem;display:flex;align-items:center;gap:0.75rem}
-    .hero-tag::before{content:'';display:inline-block;width:2rem;height:1px;background:var(--gold)}
-    .hero-name{margin-bottom:1.5rem}
-    .hero-name em{font-style:italic;color:var(--gold)}
-    .hero-sub{font-family:var(--serif);font-size:clamp(1rem,2.5vw,1.4rem);font-weight:300;font-style:italic;color:var(--muted);max-width:540px;margin-bottom:3.5rem;line-height:1.6}
-    .hero-cta{display:inline-flex;align-items:center;gap:0.75rem;font-family:var(--mono);font-size:0.75rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--light);border:1px solid var(--gold-dim);padding:0.9rem 2rem;transition:all 0.3s}
-    .hero-cta:hover{background:var(--gold);color:var(--bg);opacity:1;border-color:var(--gold)}
-    .hero-cta::after{content:'→'}
-    .hero-quote{position:absolute;bottom:3rem;right:2rem;text-align:right;max-width:320px}
-    .hero-quote blockquote{font-family:var(--serif);font-style:italic;font-size:0.95rem;color:var(--muted);line-height:1.6}
-    .hero-quote cite{font-family:var(--mono);font-size:0.65rem;letter-spacing:0.12em;color:var(--gold-dim);text-transform:uppercase;display:block;margin-top:0.5rem}
-    .about-grid{display:grid;grid-template-columns:1fr 2fr;gap:4rem;align-items:start}
-    .about-label{font-family:var(--mono);font-size:0.65rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--gold);margin-bottom:1rem}
-    .about-heading{margin-bottom:1rem}
-    .about-body p{margin-bottom:1.25rem;color:var(--text);font-size:1rem}
-    .about-body p:last-child{margin-bottom:0}
-    .principle-list{list-style:none;margin-top:2rem;border-top:1px solid var(--border);padding-top:2rem}
-    .principle-list li{display:flex;gap:1rem;padding:0.9rem 0;border-bottom:1px solid var(--border);font-size:0.9rem;color:var(--text)}
-    .principle-list li span:first-child{font-family:var(--mono);color:var(--gold);font-size:0.7rem;letter-spacing:0.1em;min-width:2.5rem;padding-top:0.1rem}
-    .section-header{margin-bottom:4rem}
-    .section-label{font-family:var(--mono);font-size:0.65rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--gold);margin-bottom:1rem}
-    .services-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:0;border:1px solid var(--border)}
-    .service-card{padding:2.5rem;border-right:1px solid var(--border);border-bottom:1px solid var(--border);transition:background 0.3s;position:relative;overflow:hidden}
-    .service-card:hover{background:var(--surface)}
-    .service-card::before{content:'';position:absolute;top:0;left:0;width:2px;height:0;background:var(--gold);transition:height 0.4s}
-    .service-card:hover::before{height:100%}
-    .service-num{font-family:var(--mono);font-size:0.65rem;color:var(--gold-dim);letter-spacing:0.1em;margin-bottom:1.5rem}
-    .service-card h3{font-size:1.25rem;margin-bottom:1rem;color:var(--light)}
-    .service-card p{font-size:0.9rem;color:var(--muted);line-height:1.7}
-    .work-card{border:1px solid var(--border);display:grid;grid-template-columns:1fr 1fr;overflow:hidden;transition:border-color 0.3s}
-    .work-card:hover{border-color:var(--gold-dim)}
-    .work-info{padding:3.5rem;display:flex;flex-direction:column;justify-content:space-between}
-    .work-tag{font-family:var(--mono);font-size:0.65rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold);margin-bottom:1.5rem}
-    .work-info h3{font-size:2rem;font-style:italic;margin-bottom:1rem}
-    .work-info p{font-size:0.9rem;color:var(--muted);margin-bottom:2rem;line-height:1.7}
-    .work-link{font-family:var(--mono);font-size:0.7rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--gold);display:inline-flex;align-items:center;gap:0.5rem}
-    .work-link::after{content:'↗'}
-    .work-visual{background:var(--surface);display:flex;align-items:center;justify-content:center;border-left:1px solid var(--border);min-height:300px;position:relative;overflow:hidden}
-    .work-visual::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at center,rgba(184,150,74,0.06) 0%,transparent 70%)}
-    .work-visual-text{font-family:var(--serif);font-size:5rem;font-style:italic;color:var(--border);font-weight:300;letter-spacing:-0.02em;line-height:1;text-align:center;padding:2rem}
-    .contact-inner{display:grid;grid-template-columns:1fr 1fr;gap:6rem;align-items:start}
-    .contact-left h2{margin-bottom:1.5rem}
-    .contact-left p{color:var(--muted);font-size:0.95rem;margin-bottom:2rem}
-    .contact-stoic{font-family:var(--serif);font-style:italic;font-size:1rem;color:var(--muted);border-left:2px solid var(--gold-dim);padding-left:1.25rem;line-height:1.6}
-    .contact-stoic cite{font-family:var(--mono);font-style:normal;font-size:0.65rem;letter-spacing:0.1em;color:var(--gold-dim);display:block;margin-top:0.4rem}
-    .contact-links{display:flex;flex-direction:column;gap:1.5rem;padding-top:0.5rem}
-    .contact-item{display:flex;flex-direction:column;gap:0.25rem;padding-bottom:1.5rem;border-bottom:1px solid var(--border)}
-    .contact-item:last-child{border-bottom:none}
-    .contact-item-label{font-family:var(--mono);font-size:0.62rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted)}
-    .contact-item-value{font-family:var(--body);font-size:1rem;color:var(--light)}
-    .contact-item-value a{color:var(--light)}
-    .contact-item-value a:hover{color:var(--gold);opacity:1}
-    footer{border-top:1px solid var(--border);padding:2.5rem 2rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem}
-    footer p{font-family:var(--mono);font-size:0.65rem;letter-spacing:0.1em;color:var(--muted);text-transform:uppercase}
-    footer .footer-quote{font-family:var(--serif);font-style:italic;font-size:0.85rem;color:var(--muted)}
-    @keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
-    .fade-up{opacity:0;animation:fadeUp 0.8s ease forwards}
-    .fade-up:nth-child(1){animation-delay:0.1s}
-    .fade-up:nth-child(2){animation-delay:0.25s}
-    .fade-up:nth-child(3){animation-delay:0.4s}
-    .fade-up:nth-child(4){animation-delay:0.55s}
-    @media(max-width:768px){
-      nav{padding:1.2rem}.nav-links{gap:1.5rem}.nav-links a{font-size:0.65rem}
-      h1{font-size:clamp(2.5rem,12vw,4rem)}
-      .about-grid{grid-template-columns:1fr;gap:2.5rem}
-      .work-card{grid-template-columns:1fr}
-      .work-visual{min-height:200px;border-left:none;border-top:1px solid var(--border)}
-      .contact-inner{grid-template-columns:1fr;gap:3rem}
-      .hero-quote{position:static;text-align:left;max-width:100%;margin-top:3rem}
-      section{padding:5rem 0}
+
+    /* ── RESET ── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--body);
+      font-size: 17px;
+      line-height: 1.75;
+      overflow-x: hidden;
     }
-    @media(max-width:480px){.nav-links{display:none}.services-grid{grid-template-columns:1fr}}
+
+    /* ── GRAIN TEXTURE OVERLAY ── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E");
+      opacity: 0.03;
+      pointer-events: none;
+      z-index: 999;
+    }
+
+    /* ── TYPOGRAPHY ── */
+    h1, h2, h3, h4 { font-family: var(--serif); font-weight: 300; color: var(--light); }
+    h1 { font-size: clamp(3rem, 9vw, 7rem); line-height: 1.05; letter-spacing: -0.02em; }
+    h2 { font-size: clamp(1.8rem, 4vw, 3rem); line-height: 1.2; }
+    h3 { font-size: 1.4rem; font-weight: 400; }
+    p  { color: var(--text); }
+
+    a  { color: var(--gold); text-decoration: none; transition: opacity 0.2s; }
+    a:hover { opacity: 0.7; }
+
+    /* ── ORNAMENT DIVIDER ── */
+    .ornament {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin: 0.5rem 0;
+    }
+    .ornament::before,
+    .ornament::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(to right, transparent, var(--gold-dim));
+    }
+    .ornament::after {
+      background: linear-gradient(to left, transparent, var(--gold-dim));
+    }
+    .ornament span {
+      font-family: var(--serif);
+      color: var(--gold);
+      font-size: 1.1rem;
+      letter-spacing: 0.1em;
+    }
+
+    /* ── LAYOUT ── */
+    .container {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 0 2rem;
+    }
+
+    section { padding: 7rem 0; }
+    section + section { border-top: 1px solid var(--border); }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      padding: 1.4rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(9,9,10,0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-logo {
+      font-family: var(--mono);
+      font-size: 0.8rem;
+      letter-spacing: 0.15em;
+      color: var(--gold);
+      text-transform: uppercase;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2.5rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--light); opacity: 1; }
+
+    /* ── HERO ── */
+    #hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      padding-top: 5rem;
+      border-top: none;
+      position: relative;
+    }
+
+    .hero-inner { padding: 0 2rem; max-width: 960px; margin: 0 auto; width: 100%; }
+
+    .hero-tag {
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 2rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    .hero-tag::before {
+      content: '';
+      display: inline-block;
+      width: 2rem;
+      height: 1px;
+      background: var(--gold);
+    }
+
+    .hero-name { margin-bottom: 1.5rem; }
+    .hero-name em {
+      font-style: italic;
+      color: var(--gold);
+    }
+
+    .hero-sub {
+      font-family: var(--serif);
+      font-size: clamp(1rem, 2.5vw, 1.4rem);
+      font-weight: 300;
+      font-style: italic;
+      color: var(--muted);
+      max-width: 540px;
+      margin-bottom: 3.5rem;
+      line-height: 1.6;
+    }
+
+    .hero-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-family: var(--mono);
+      font-size: 0.75rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--light);
+      border: 1px solid var(--gold-dim);
+      padding: 0.9rem 2rem;
+      transition: all 0.3s;
+    }
+    .hero-cta:hover {
+      background: var(--gold);
+      color: var(--bg);
+      opacity: 1;
+      border-color: var(--gold);
+    }
+    .hero-cta::after { content: '→'; }
+
+    .hero-quote {
+      position: absolute;
+      bottom: 3rem;
+      right: 2rem;
+      text-align: right;
+      max-width: 320px;
+    }
+    .hero-quote blockquote {
+      font-family: var(--serif);
+      font-style: italic;
+      font-size: 0.95rem;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+    .hero-quote cite {
+      font-family: var(--mono);
+      font-size: 0.65rem;
+      letter-spacing: 0.12em;
+      color: var(--gold-dim);
+      text-transform: uppercase;
+      display: block;
+      margin-top: 0.5rem;
+    }
+
+    /* ── ABOUT ── */
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 2fr;
+      gap: 4rem;
+      align-items: start;
+    }
+
+    .about-label {
+      font-family: var(--mono);
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 1rem;
+    }
+
+    .about-heading { margin-bottom: 1rem; }
+
+    .about-body p {
+      margin-bottom: 1.25rem;
+      color: var(--text);
+      font-size: 1rem;
+    }
+
+    .about-body p:last-child { margin-bottom: 0; }
+
+    .principle-list {
+      list-style: none;
+      margin-top: 2rem;
+      border-top: 1px solid var(--border);
+      padding-top: 2rem;
+    }
+    .principle-list li {
+      display: flex;
+      gap: 1rem;
+      padding: 0.9rem 0;
+      border-bottom: 1px solid var(--border);
+      font-size: 0.9rem;
+      color: var(--text);
+    }
+    .principle-list li span:first-child {
+      font-family: var(--mono);
+      color: var(--gold);
+      font-size: 0.7rem;
+      letter-spacing: 0.1em;
+      min-width: 2.5rem;
+      padding-top: 0.1rem;
+    }
+
+    /* ── SERVICES ── */
+    .section-header {
+      margin-bottom: 4rem;
+    }
+    .section-label {
+      font-family: var(--mono);
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 1rem;
+    }
+
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 0;
+      border: 1px solid var(--border);
+    }
+
+    .service-card {
+      padding: 2.5rem;
+      border-right: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      transition: background 0.3s;
+      position: relative;
+      overflow: hidden;
+    }
+    .service-card:hover { background: var(--surface); }
+
+    .service-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 2px;
+      height: 0;
+      background: var(--gold);
+      transition: height 0.4s;
+    }
+    .service-card:hover::before { height: 100%; }
+
+    .service-num {
+      font-family: var(--mono);
+      font-size: 0.65rem;
+      color: var(--gold-dim);
+      letter-spacing: 0.1em;
+      margin-bottom: 1.5rem;
+    }
+
+    .service-card h3 {
+      font-size: 1.25rem;
+      margin-bottom: 1rem;
+      color: var(--light);
+    }
+
+    .service-card p {
+      font-size: 0.9rem;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    /* ── WORK ── */
+    .work-card {
+      border: 1px solid var(--border);
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      overflow: hidden;
+      transition: border-color 0.3s;
+    }
+    .work-card:hover { border-color: var(--gold-dim); }
+
+    .work-info {
+      padding: 3.5rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .work-tag {
+      font-family: var(--mono);
+      font-size: 0.65rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 1.5rem;
+    }
+
+    .work-info h3 {
+      font-size: 2rem;
+      font-style: italic;
+      margin-bottom: 1rem;
+    }
+
+    .work-info p {
+      font-size: 0.9rem;
+      color: var(--muted);
+      margin-bottom: 2rem;
+      line-height: 1.7;
+    }
+
+    .work-link {
+      font-family: var(--mono);
+      font-size: 0.7rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--gold);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .work-link::after { content: '↗'; }
+
+    .work-visual {
+      background: var(--surface);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-left: 1px solid var(--border);
+      min-height: 300px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Decorative lock icon for password manager */
+    .work-icon {
+      position: relative;
+      z-index: 1;
+    }
+    .work-icon svg {
+      width: 80px;
+      height: 80px;
+      opacity: 0.15;
+    }
+
+    .work-visual::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at center, rgba(184,150,74,0.06) 0%, transparent 70%);
+    }
+
+    .work-visual-text {
+      font-family: var(--serif);
+      font-size: 5rem;
+      font-style: italic;
+      color: var(--border);
+      font-weight: 300;
+      letter-spacing: -0.02em;
+      line-height: 1;
+      text-align: center;
+      padding: 2rem;
+    }
+
+    /* ── CONTACT ── */
+    .contact-inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6rem;
+      align-items: start;
+    }
+
+    .contact-left h2 { margin-bottom: 1.5rem; }
+    .contact-left p {
+      color: var(--muted);
+      font-size: 0.95rem;
+      margin-bottom: 2rem;
+    }
+
+    .contact-stoic {
+      font-family: var(--serif);
+      font-style: italic;
+      font-size: 1rem;
+      color: var(--muted);
+      border-left: 2px solid var(--gold-dim);
+      padding-left: 1.25rem;
+      line-height: 1.6;
+    }
+    .contact-stoic cite {
+      font-family: var(--mono);
+      font-style: normal;
+      font-size: 0.65rem;
+      letter-spacing: 0.1em;
+      color: var(--gold-dim);
+      display: block;
+      margin-top: 0.4rem;
+    }
+
+    .contact-links { display: flex; flex-direction: column; gap: 1.5rem; padding-top: 0.5rem; }
+
+    .contact-item {
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+      padding-bottom: 1.5rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .contact-item:last-child { border-bottom: none; }
+
+    .contact-item-label {
+      font-family: var(--mono);
+      font-size: 0.62rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    .contact-item-value {
+      font-family: var(--body);
+      font-size: 1rem;
+      color: var(--light);
+    }
+    .contact-item-value a { color: var(--light); }
+    .contact-item-value a:hover { color: var(--gold); opacity: 1; }
+
+    /* ── FOOTER ── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 2.5rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    footer p {
+      font-family: var(--mono);
+      font-size: 0.65rem;
+      letter-spacing: 0.1em;
+      color: var(--muted);
+      text-transform: uppercase;
+    }
+
+    footer .footer-quote {
+      font-family: var(--serif);
+      font-style: italic;
+      font-size: 0.85rem;
+      color: var(--muted);
+    }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .fade-up {
+      opacity: 0;
+      animation: fadeUp 0.8s ease forwards;
+    }
+    .fade-up:nth-child(1) { animation-delay: 0.1s; }
+    .fade-up:nth-child(2) { animation-delay: 0.25s; }
+    .fade-up:nth-child(3) { animation-delay: 0.4s; }
+    .fade-up:nth-child(4) { animation-delay: 0.55s; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 768px) {
+      nav { padding: 1.2rem; }
+      .nav-links { gap: 1.5rem; }
+      .nav-links a { font-size: 0.65rem; }
+
+      h1 { font-size: clamp(2.5rem, 12vw, 4rem); }
+
+      .about-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+      .work-card { grid-template-columns: 1fr; }
+      .work-visual { min-height: 200px; border-left: none; border-top: 1px solid var(--border); }
+      .contact-inner { grid-template-columns: 1fr; gap: 3rem; }
+
+      .hero-quote { position: static; text-align: left; max-width: 100%; margin-top: 3rem; }
+      section { padding: 5rem 0; }
+    }
+
+    @media (max-width: 480px) {
+      .nav-links { display: none; }
+      .services-grid { grid-template-columns: 1fr; }
+    }
   </style>
 </head>
 <body>
+
+  <!-- NAV -->
   <nav>
     <span class="nav-logo">FavourDevLabs</span>
     <ul class="nav-links">
@@ -122,18 +561,29 @@
       <li><a href="#contact">Contact</a></li>
     </ul>
   </nav>
+
+  <!-- HERO -->
   <section id="hero">
     <div class="hero-inner">
       <div class="hero-tag fade-up">Android Consultant</div>
-      <h1 class="hero-name fade-up">Favour<br><em>DevLabs</em></h1>
-      <p class="hero-sub fade-up">I help businesses diagnose, improve, and harden their Android applications — with clarity, precision, and no excess.</p>
+      <h1 class="hero-name fade-up">
+        Favour<br><em>DevLabs</em>
+      </h1>
+      <p class="hero-sub fade-up">
+        I help businesses diagnose, improve, and harden their Android applications — with clarity, precision, and no excess.
+      </p>
       <a href="#contact" class="hero-cta fade-up">Start a conversation</a>
+
       <div class="hero-quote">
-        <blockquote>"Confine yourself to the present."</blockquote>
+        <blockquote>
+          "Confine yourself to the present."
+        </blockquote>
         <cite>— Marcus Aurelius, Meditations</cite>
       </div>
     </div>
   </section>
+
+  <!-- ABOUT -->
   <section id="about">
     <div class="container">
       <div class="about-grid">
@@ -143,9 +593,16 @@
         </div>
         <div class="about-body">
           <h2 class="about-heading">Efficient by principle.<br>Precise by practice.</h2>
-          <p>I am an Android consultant focused on one thing: making Android applications work the way they should. Not more features — better foundations. Not longer timelines — sharper decisions.</p>
-          <p>Stoicism taught me that most problems come from excess — excess complexity, excess assumptions, excess abstraction. I apply the same discipline to code. Strip it back. Find what is broken. Fix it properly.</p>
-          <p>Whether your app is slow, fragile, poorly architected, or simply needs an experienced eye — I bring honest assessment and direct action.</p>
+          <p>
+            I am an Android consultant focused on one thing: making Android applications work the way they should. Not more features — better foundations. Not longer timelines — sharper decisions.
+          </p>
+          <p>
+            Stoicism taught me that most problems come from excess — excess complexity, excess assumptions, excess abstraction. I apply the same discipline to code. Strip it back. Find what is broken. Fix it properly.
+          </p>
+          <p>
+            Whether your app is slow, fragile, poorly architected, or simply needs an experienced eye — I bring honest assessment and direct action.
+          </p>
+
           <ul class="principle-list">
             <li><span>I.</span> Diagnose before prescribing. Every codebase is different.</li>
             <li><span>II.</span> Clarity over cleverness. Good code reads like good prose.</li>
@@ -156,12 +613,15 @@
       </div>
     </div>
   </section>
+
+  <!-- SERVICES -->
   <section id="services">
     <div class="container">
       <div class="section-header">
         <p class="section-label">Services</p>
         <h2>What I do</h2>
       </div>
+
       <div class="services-grid">
         <div class="service-card">
           <p class="service-num">01</p>
@@ -186,19 +646,26 @@
       </div>
     </div>
   </section>
+
+  <!-- WORK -->
   <section id="work">
     <div class="container">
       <div class="section-header">
         <p class="section-label">Work</p>
         <h2>Built with intention</h2>
       </div>
+
       <div class="work-card">
         <div class="work-info">
           <div>
             <p class="work-tag">Android · Security · Kotlin</p>
             <h3>Cleanthes</h3>
-            <p>A password manager for Android, built from the ground up with security as the primary constraint. Named after the Stoic philosopher who succeeded Zeno — a reminder that foundations matter.</p>
-            <p>Designed to handle sensitive credentials with minimal surface area, encrypted storage, and no network dependency.</p>
+            <p>
+              A password manager for Android, built from the ground up with security as the primary constraint. Named after the Stoic philosopher who succeeded Zeno — a reminder that foundations matter.
+            </p>
+            <p>
+              Designed to handle sensitive credentials with minimal surface area, encrypted storage, and no network dependency.
+            </p>
           </div>
           <a href="https://github.com/FavourDevLabs/cleanthes" target="_blank" class="work-link">View on GitHub</a>
         </div>
@@ -208,6 +675,8 @@
       </div>
     </div>
   </section>
+
+  <!-- CONTACT -->
   <section id="contact">
     <div class="container">
       <div class="contact-inner">
@@ -220,14 +689,19 @@
             <cite>— Marcus Aurelius</cite>
           </blockquote>
         </div>
+
         <div class="contact-links">
           <div class="contact-item">
             <span class="contact-item-label">Email</span>
-            <span class="contact-item-value"><a href="mailto:contact@favourdevlabs.dev">contact@favourdevlabs.dev</a></span>
+            <span class="contact-item-value">
+              <a href="mailto:FavourDevLabs@proton.me">FavourDevLabs@proton.me</a>
+            </span>
           </div>
           <div class="contact-item">
             <span class="contact-item-label">GitHub</span>
-            <span class="contact-item-value"><a href="https://github.com/FavourDevLabs" target="_blank">github.com/FavourDevLabs</a></span>
+            <span class="contact-item-value">
+              <a href="https://github.com/FavourDevLabs" target="_blank">github.com/FavourDevLabs</a>
+            </span>
           </div>
           <div class="contact-item">
             <span class="contact-item-label">Location</span>
@@ -241,11 +715,14 @@
       </div>
     </div>
   </section>
+
+  <!-- FOOTER -->
   <footer>
-    <div class="container" style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem;width:100%">
+    <div class="container" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:1rem; width:100%;">
       <p>© 2025 FavourDevLabs · favourdevlabs.dev</p>
       <span class="footer-quote">"The obstacle is the way."</span>
     </div>
   </footer>
+
 </body>
 </html>
