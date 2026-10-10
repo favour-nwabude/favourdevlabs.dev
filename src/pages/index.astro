@@ -1,0 +1,34 @@
+---
+import BaseHead from '../components/BaseHead.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
+	</head>
+	<body>
+		<Header />
+		<main>
+			<h1>favourdevlabs</h1>
+			<p>
+				Welcome to the primary technical index for <code>favourdevlabs.dev</code>. 
+				This environment serves as an archive for deep-dive technical explorations, 
+				systems engineering analysis, and software architectural research.
+			</p>
+			<hr />
+			<h2>Treatises</h2>
+			<p>
+				Long-form technical writing and architectural deep dives are cataloged in our custom collection.
+			</p>
+			<p>
+				<a href="/treatises/" class="treatises-link">→ Explore Technical Treatises</a>
+			</p>
+		</main>
+		<Footer />
+	</body>
+</html>
+
