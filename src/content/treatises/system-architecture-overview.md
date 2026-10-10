@@ -2,7 +2,6 @@
 title: 'System Architecture & Infrastructure Overview'
 description: 'A technical treatise on containerized web deployments using Termux, pd-ubuntu, and Astro.'
 pubDate: 2026-10-10
-heroImage: '../../assets/blog-placeholder-1.jpg'
 ---
 
 ## Executive Summary

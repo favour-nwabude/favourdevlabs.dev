@@ -3,6 +3,11 @@ import BaseHead from '../components/BaseHead.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
+import { getCollection } from 'astro:content';
+
+const treatises = (await getCollection('treatises')).sort(
+	(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+);
 ---
 
 <!doctype html>
@@ -13,20 +18,78 @@ import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
 	<body>
 		<Header />
 		<main>
-			<h1>favourdevlabs</h1>
-			<p>
-				Welcome to the primary technical index for <code>favourdevlabs.dev</code>. 
-				This environment serves as an archive for deep-dive technical explorations, 
-				systems engineering analysis, and software architectural research.
-			</p>
+			<section class="stoic-hero">
+				<blockquote class="stoic-quote">
+					"CONFINE YOURSELF TO THE PRESENT."
+					<footer>— MARCUS AURELIUS</footer>
+				</blockquote>
+				<h1>Favour Nwabude</h1>
+				<p class="subtitle">ANDROID SYSTEMS CONSULTANT | INTERNALS, LINUX & JVM</p>
+				<p class="intro">
+					I help engineering teams diagnose, optimize, and harden Android applications and low-level systems. Built on-device with zero excess abstractions, zero noise, and strict first principles.
+				</p>
+			</section>
+
 			<hr />
-			<h2>Treatises</h2>
-			<p>
-				Long-form technical writing and architectural deep dives are cataloged in our custom collection.
-			</p>
-			<p>
-				<a href="/treatises/" class="treatises-link">→ Explore Technical Treatises</a>
-			</p>
+
+			<section>
+				<h2>ENGINEERING PRINCIPLES</h2>
+				<ul class="discipline-list">
+					<li><strong>I. DIAGNOSE BEFORE PRESCRIBING:</strong> Root-cause analysis via system telemetry and git history before touching code.</li>
+					<li><strong>II. CLARITY OVER CLEVERNESS:</strong> Readable, deterministic code that operates predictably under hardware constraints.</li>
+					<li><strong>III. NO WASTED MOTION:</strong> Elimination of bloatware, unnecessary libraries, and runtime memory overhead.</li>
+					<li><strong>IV. UNCOMPROMISING HONESTY:</strong> Direct assessment of architectural flaws and security risks.</li>
+				</ul>
+			</section>
+
+			<hr />
+
+			<section>
+				<h2>CONSULTING SERVICES</h2>
+				<ul class="discipline-list">
+					<li><strong>Architecture & Security Review:</strong> Auditing Android application modules, state machines, and cryptographic boundaries.</li>
+					<li><strong>Performance & Memory Profiling:</strong> Eliminating GC pauses, main-thread blocking, frame drops, and background battery drain.</li>
+					<li><strong>Codebase Hardening:</strong> Rooting out memory leaks, race conditions, and improper lifecycle handling in Kotlin/Native code.</li>
+				</ul>
+			</section>
+
+			<hr />
+
+			<section class="app-card">
+				<h2>FEATURED PROOF OF WORK</h2>
+				<p>
+					<strong>CLEANTHES VAULT:</strong> Multi-module, security-hardened Android application with hardware attestation and Zero-Trust session management.
+					<br />
+					<a href="/apps/cleanthes/" class="cta-link">→ EXPLORE CLEANTHES ARCHITECTURE</a>
+				</p>
+				<br />
+				<p>
+					<strong>HAIL OPEN SOURCE CONTRIBUTION:</strong> Diagnosed and patched a critical biometric-lock lifecycle flaw in Hail (Android freezing utility) via on-device debugging and git bisect analysis.
+					<br />
+					<a href="https://github.com/aistra0528/Hail/pull/442" target="_blank" class="cta-link">→ VIEW PULL REQUEST #442</a>
+				</p>
+			</section>
+
+			<hr />
+
+			<section>
+				<h2>SYSTEMS TREATISES</h2>
+				<p class="mission-statement">
+					<em>OUR TREATISES EXIST TO BREAK COMPLEX SYSTEMS DOWN TO FIRST PRINCIPLES. WE STRIP AWAY INDUSTRIAL JARGON, OBFUSCATION, AND PRETENSION TO EXPLAIN LOW-LEVEL ARCHITECTURE IN PLAIN, ACCESSIBLE LANGUAGE.</em>
+				</p>
+				<ul class="treatise-list">
+					{
+						treatises.slice(0, 3).map((post) => (
+							<li>
+								<a href={`/treatises/${post.id}/`}>
+									<span class="title">{post.data.title}</span>
+								</a>
+							</li>
+						))
+					}
+				</ul>
+				<p><a href="/treatises/" class="cta-link">→ VIEW ALL ARCHIVED TREATISES</a></p>
+			</section>
 		</main>
 		<Footer />
 	</body>

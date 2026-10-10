@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630" style="background:#09090a;">
+  <style>
+    .title { fill: #f0ebe0; font-family: monospace; font-size: 28px; font-weight: bold; letter-spacing: 2px; }
+    .label { fill: #b8964a; font-family: monospace; font-size: 18px; letter-spacing: 1px; }
+    .subtext { fill: #888888; font-family: monospace; font-size: 14px; }
+    .box { fill: #111113; stroke: #22221f; stroke-width: 2; }
+    .highlight-box { fill: #161512; stroke: #b8964a; stroke-width: 2; }
+    .arrow { stroke: #b8964a; stroke-width: 2; marker-end: url(#arrowhead); }
+  </style>
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#b8964a" />
+    </marker>
+  </defs>
+
+  <!-- Title Banner -->
+  <text x="60" y="70" class="title">ANDROID SYSTEM RUNTIME ARCHITECTURE</text>
+  <line x1="60" y1="90" x2="1140" y2="90" stroke="#22221f" stroke-width="2" />
+
+  <!-- Layer 1: Linux Kernel -->
+  <rect x="60" y="130" width="1080" height="100" class="box" />
+  <text x="90" y="170" class="label">LINUX KERNEL LAYER</text>
+  <text x="90" y="200" class="subtext">IPC Binder Driver (/dev/binder) | Memory Management | Process Scheduler</text>
+
+  <!-- Layer 2: Zygote & ART -->
+  <rect x="60" y="270" width="520" height="140" class="highlight-box" />
+  <text x="90" y="310" class="label">ZYGOTE PROCESS</text>
+  <text x="90" y="340" class="subtext">Preloaded Framework Classes & ART</text>
+  <text x="90" y="370" class="subtext">Forks Application Processes via COW</text>
+
+  <rect x="620" y="270" width="520" height="140" class="box" />
+  <text x="650" y="310" class="label">BINDER IPC TRANSACTION</text>
+  <text x="650" y="340" class="subtext">Zero-Copy Memory Mapping via mmap()</text>
+  <text x="650" y="370" class="subtext">Cross-Process Sandboxed Communication</text>
+
+  <!-- Layer 3: Application Runtime -->
+  <rect x="60" y="450" width="1080" height="120" class="box" />
+  <text x="90" y="490" class="label">APPLICATION PROCESS (ART RUNTIME)</text>
+  <text x="90" y="520" class="subtext">JIT / AOT Compilation | Garbage Collection Pipeline | Unidirectional State</text>
+</svg>

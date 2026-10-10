@@ -1,0 +1,62 @@
+---
+import BaseHead from '../../components/BaseHead.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<BaseHead title="Cleanthes — Hardened Android Vault Architecture" description="A security-focused, modular Android credential manager engineered with hardware attestation and Zero-Trust session lifecycles." />
+	</head>
+	<body>
+		<Header />
+		<main>
+			<section class="stoic-hero">
+				<blockquote class="stoic-quote">
+					"FATE LEADS THE WILLING, AND DRAGS ALONG THE RELUCTANT."
+					<footer>— CLEANTHES</footer>
+				</blockquote>
+				<h1>Cleanthes Application Showcase</h1>
+				<p class="subtitle">HARDENED SECURITY VAULT | MULTI-MODULE ARCHITECTURE | ZERO-TRUST LIFECYCLE</p>
+			</section>
+
+			<hr />
+
+			<section>
+				<h2>EXECUTIVE OVERVIEW</h2>
+				<p>
+					<strong>Cleanthes</strong> is a native Android credential vault and security-focused management application built from first principles. Designed for zero-trust security environments, it combines hardware-backed biometric attestation, isolated session lifecycles, and modern Jetpack Compose UI rendering without sacrificing low-level performance or runtime safety.
+				</p>
+			</section>
+
+			<hr />
+
+			<section>
+				<h2>MODULAR SYSTEM GRAPH</h2>
+				<p>
+					The application enforces strict architectural boundaries using a decoupled feature-and-core module graph. This prevents feature bleed and ensures compile-time dependency isolation:
+				</p>
+				<ul class="discipline-list">
+					<li><strong>:core:security & :attestation:</strong> Hardware-backed cryptographic keys, Android KeyStore abstraction, and runtime attestation validation.</li>
+					<li><strong>:core:security:session:</strong> Isolated session lifecycles managing memory-wipe mechanisms for raw credentials upon lock trigger.</li>
+					<li><strong>:core:data & :domain:</strong> Room 2.7 persistence layer managed via Symbol Processing (KSP) with encrypted at-rest database instances.</li>
+					<li><strong>:feature:autofill & :auditlog:</strong> Native Android Autofill Framework integration, audit logging, export pipelines, and biometrically protected credentials.</li>
+				</ul>
+			</section>
+
+			<hr />
+
+			<section>
+				<h2>ENGINEERING SPECS & TOOLCHAIN</h2>
+				<ul class="discipline-list">
+					<li><strong>UI Pipeline:</strong> Declarative Jetpack Compose UI with unidirectional state flows and Hilt injection.</li>
+					<li><strong>Compiler & Runtime:</strong> Kotlin 2.2 toolchain, Java 17 JVM target, and KSP for compile-time code generation.</li>
+					<li><strong>Release Hardening:</strong> Proguard/R8 code minification, resource shrinking, and backup prevention (`allowBackup = false`).</li>
+				</ul>
+			</section>
+		</main>
+		<Footer />
+	</body>
+</html>
+
