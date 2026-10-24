@@ -1,0 +1,79 @@
+---
+import type { ImageMetadata } from "astro";
+import { Image } from "astro:assets";
+import BaseLayout from "./BaseLayout.astro";
+import { formatDate } from "../lib/treatises";
+
+interface Neighbour {
+  id: string;
+  title: string;
+}
+
+interface Props {
+  id: string;
+  title: string;
+  description: string;
+  pubDate: Date;
+  updatedDate?: Date;
+  tags: string[];
+  draft: boolean;
+  heroImage?: ImageMetadata;
+  heroAlt: string;
+  minutes: number;
+  newer?: Neighbour;
+  older?: Neighbour;
+}
+
+const { id, title, description, pubDate, updatedDate, tags, draft, heroImage, heroAlt, minutes, newer, older } =
+  Astro.props;
+---
+
+<BaseLayout title={`${title} — FavourDevLabs`} description={description} image={`/og/${id}.png`} type="article">
+  <article class="treatise">
+    <header class="treatise-head">
+      <p class="treatise-meta">
+        <span>{formatDate(pubDate)}</span>
+        <span>{minutes} min read</span>
+        {tags.length > 0 && <span>{tags.join(" · ")}</span>}
+        {draft && <span class="badge">Draft</span>}
+      </p>
+      <h1>{title}</h1>
+      <p class="treatise-lede">{description}</p>
+      {updatedDate && <p class="treatise-meta">Updated {formatDate(updatedDate)}</p>}
+    </header>
+
+    {
+      heroImage && (
+        <figure class="treatise-hero">
+          <Image src={heroImage} alt={heroAlt} />
+        </figure>
+      )
+    }
+
+    <div class="prose">
+      <slot />
+    </div>
+
+    <footer class="treatise-end">
+      <div class="treatise-cta">
+        <p>If your Android application has problems worth solving, I am ready to look at them directly.</p>
+        <a class="work-link" href="/#contact">Start a conversation</a>
+      </div>
+      <nav class="treatise-nav" aria-label="More treatises">
+        {newer && (
+          <a href={`/treatises/${newer.id}/`}>
+            <span>Newer</span>
+            {newer.title}
+          </a>
+        )}
+        {older && (
+          <a class="older" href={`/treatises/${older.id}/`}>
+            <span>Older</span>
+            {older.title}
+          </a>
+        )}
+      </nav>
+      <a class="work-link" href="/treatises/">All treatises</a>
+    </footer>
+  </article>
+</BaseLayout>

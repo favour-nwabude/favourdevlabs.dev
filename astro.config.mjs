@@ -7,5 +7,7 @@ import sitemap from '@astrojs/sitemap';
 export default defineConfig({
   site: 'https://favourdevlabs.dev',
   integrations: [mdx(), sitemap()],
+  markdown: {
+    shikiConfig: { theme: 'vitesse-dark' },
+  },
 });
-

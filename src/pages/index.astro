@@ -1,97 +1,181 @@
 ---
-import BaseHead from '../components/BaseHead.astro';
-import Header from '../components/Header.astro';
-import Footer from '../components/Footer.astro';
-import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
-import { getCollection } from 'astro:content';
-
-const treatises = (await getCollection('treatises')).sort(
-	(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
-);
+import BaseLayout from '../layouts/BaseLayout.astro';
+import LatestTreatises from '../components/LatestTreatises.astro';
+import { SITE_DESCRIPTION, CONTACT } from '../consts';
 ---
 
-<!doctype html>
-<html lang="en">
-	<head>
-		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
-	</head>
-	<body>
-		<Header />
-		<main>
-			<section class="stoic-hero">
-				<blockquote class="stoic-quote">
-					"CONFINE YOURSELF TO THE PRESENT."
-					<footer>— MARCUS AURELIUS</footer>
-				</blockquote>
-				<h1>Favour Nwabude</h1>
-				<p class="subtitle">ANDROID SYSTEMS CONSULTANT | INTERNALS, LINUX & JVM</p>
-				<p class="intro">
-					I help engineering teams diagnose, optimize, and harden Android applications and low-level systems. Built on-device with zero excess abstractions, zero noise, and strict first principles.
-				</p>
-			</section>
+<BaseLayout title="Favour Nwabude — Android Consultant" description={SITE_DESCRIPTION} wide>
+  <section id="hero">
+    <div class="hero-inner">
+      <div class="hero-tag fade-up">Android Consultant</div>
+      <h1 class="hero-name fade-up">Favour<br /><em>Nwabude</em></h1>
+      <p class="hero-sub fade-up">
+        I help businesses diagnose, improve, and harden their Android applications — with clarity,
+        precision, and no excess.
+      </p>
+      <div class="hero-actions fade-up">
+        <a href="#contact" class="hero-cta">Start a conversation</a>
+        <a href="/treatises/" class="hero-link">Read the treatises</a>
+      </div>
+      <div class="hero-quote">
+        <blockquote>"Confine yourself to the present."</blockquote>
+        <cite>— Marcus Aurelius, Meditations</cite>
+      </div>
+    </div>
+  </section>
 
-			<hr />
+  <LatestTreatises />
 
-			<section>
-				<h2>ENGINEERING PRINCIPLES</h2>
-				<ul class="discipline-list">
-					<li><strong>I. DIAGNOSE BEFORE PRESCRIBING:</strong> Root-cause analysis via system telemetry and git history before touching code.</li>
-					<li><strong>II. CLARITY OVER CLEVERNESS:</strong> Readable, deterministic code that operates predictably under hardware constraints.</li>
-					<li><strong>III. NO WASTED MOTION:</strong> Elimination of bloatware, unnecessary libraries, and runtime memory overhead.</li>
-					<li><strong>IV. UNCOMPROMISING HONESTY:</strong> Direct assessment of architectural flaws and security risks.</li>
-				</ul>
-			</section>
+  <section id="about">
+    <div class="container">
+      <div class="about-grid">
+        <div>
+          <p class="about-label">About</p>
+          <div class="ornament"><span>✦</span></div>
+        </div>
+        <div class="about-body">
+          <h2 class="about-heading">Efficient by principle.<br />Precise by practice.</h2>
+          <p>
+            I am an Android consultant focused on one thing: making Android applications work the way
+            they should. Not more features — better foundations. Not longer timelines — sharper
+            decisions.
+          </p>
+          <p>
+            Over three years, I have built production Android applications entirely on-device — no
+            laptop, no IDE — studying security-focused codebases from the ground up and applying those
+            patterns to real work.
+          </p>
+          <p>
+            Stoicism taught me that most problems come from excess — excess complexity, excess
+            assumptions, excess abstraction. I apply the same discipline to code. Strip it back. Find
+            what is broken. Fix it properly.
+          </p>
+          <p>
+            Whether your app is slow, fragile, poorly architected, or simply needs an experienced eye —
+            I bring honest assessment and direct action.
+          </p>
+          <ul class="principle-list">
+            <li><span>I.</span> Diagnose before prescribing. Every codebase is different.</li>
+            <li><span>II.</span> Clarity over cleverness. Good code reads like good prose.</li>
+            <li><span>III.</span> No wasted motion. Every recommendation earns its place.</li>
+            <li><span>IV.</span> Honest assessment, always. Even when it is uncomfortable.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
 
-			<hr />
+  <section id="services">
+    <div class="container">
+      <div class="section-header">
+        <p class="section-label">Services</p>
+        <h2>What I do</h2>
+      </div>
+      <div class="services-grid">
+        <div class="service-card">
+          <p class="service-num">01</p>
+          <h3>Architecture Review</h3>
+          <p>
+            Your Android app's structure determines how it scales, breaks, and evolves. I audit your
+            architecture and deliver clear, actionable recommendations.
+          </p>
+        </div>
+        <div class="service-card">
+          <p class="service-num">02</p>
+          <h3>Code Quality Audit</h3>
+          <p>
+            A systematic review of your codebase — identifying technical debt, anti-patterns, and
+            critical vulnerabilities before they become expensive problems.
+          </p>
+        </div>
+        <div class="service-card">
+          <p class="service-num">03</p>
+          <h3>Performance Diagnosis</h3>
+          <p>
+            Slow apps lose users. I identify the exact causes of lag, memory leaks, and battery drain —
+            and show you precisely how to eliminate them.
+          </p>
+        </div>
+        <div class="service-card">
+          <p class="service-num">04</p>
+          <h3>Technical Advisory</h3>
+          <p>
+            Ongoing strategic guidance for your Android development decisions — from library choices to
+            team practices. A second pair of expert eyes when it matters most.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
 
-			<section>
-				<h2>CONSULTING SERVICES</h2>
-				<ul class="discipline-list">
-					<li><strong>Architecture & Security Review:</strong> Auditing Android application modules, state machines, and cryptographic boundaries.</li>
-					<li><strong>Performance & Memory Profiling:</strong> Eliminating GC pauses, main-thread blocking, frame drops, and background battery drain.</li>
-					<li><strong>Codebase Hardening:</strong> Rooting out memory leaks, race conditions, and improper lifecycle handling in Kotlin/Native code.</li>
-				</ul>
-			</section>
+  <section id="work">
+    <div class="container">
+      <div class="section-header">
+        <p class="section-label">Work</p>
+        <h2>Built with intention</h2>
+      </div>
+      <div class="work-card">
+        <div class="work-info">
+          <div>
+            <p class="work-tag">Android · Security · Kotlin</p>
+            <h3>Cleanthes</h3>
+            <p>
+              A password manager for Android, built from the ground up with security as the primary
+              constraint. Named after the Stoic philosopher who succeeded Zeno — a reminder that
+              foundations matter.
+            </p>
+            <p>Designed to handle sensitive credentials with minimal surface area and encrypted storage.</p>
+          </div>
+          <div class="work-links">
+            <a href="/apps/cleanthes/" class="work-link">Architecture</a>
+            <a href="https://github.com/FavourDevLabs/cleanthes" target="_blank" rel="noopener" class="work-link external">View on GitHub</a>
+          </div>
+        </div>
+        <div class="work-visual">
+          <div class="work-visual-text" aria-hidden="true">C</div>
+        </div>
+      </div>
+    </div>
+  </section>
 
-			<hr />
-
-			<section class="app-card">
-				<h2>FEATURED PROOF OF WORK</h2>
-				<p>
-					<strong>CLEANTHES VAULT:</strong> Multi-module, security-hardened Android application with hardware attestation and Zero-Trust session management.
-					<br />
-					<a href="/apps/cleanthes/" class="cta-link">→ EXPLORE CLEANTHES ARCHITECTURE</a>
-				</p>
-				<br />
-				<p>
-					<strong>HAIL OPEN SOURCE CONTRIBUTION:</strong> Diagnosed and patched a critical biometric-lock lifecycle flaw in Hail (Android freezing utility) via on-device debugging and git bisect analysis.
-					<br />
-					<a href="https://github.com/aistra0528/Hail/pull/442" target="_blank" class="cta-link">→ VIEW PULL REQUEST #442</a>
-				</p>
-			</section>
-
-			<hr />
-
-			<section>
-				<h2>SYSTEMS TREATISES</h2>
-				<p class="mission-statement">
-					<em>OUR TREATISES EXIST TO BREAK COMPLEX SYSTEMS DOWN TO FIRST PRINCIPLES. WE STRIP AWAY INDUSTRIAL JARGON, OBFUSCATION, AND PRETENSION TO EXPLAIN LOW-LEVEL ARCHITECTURE IN PLAIN, ACCESSIBLE LANGUAGE.</em>
-				</p>
-				<ul class="treatise-list">
-					{
-						treatises.slice(0, 3).map((post) => (
-							<li>
-								<a href={`/treatises/${post.id}/`}>
-									<span class="title">{post.data.title}</span>
-								</a>
-							</li>
-						))
-					}
-				</ul>
-				<p><a href="/treatises/" class="cta-link">→ VIEW ALL ARCHIVED TREATISES</a></p>
-			</section>
-		</main>
-		<Footer />
-	</body>
-</html>
-
+  <section id="contact">
+    <div class="container">
+      <div class="contact-inner">
+        <div class="contact-left">
+          <p class="section-label">Contact</p>
+          <h2>Let us work together.</h2>
+          <p>
+            If your Android application has problems worth solving, I am ready to look at them
+            directly. No lengthy onboarding. No vague proposals. Just honest work.
+          </p>
+          <blockquote class="contact-stoic">
+            "Do not indulge in speculation about what other people are doing. Attend to what is before you."
+            <cite>— Marcus Aurelius</cite>
+          </blockquote>
+        </div>
+        <div class="contact-links">
+          <div class="contact-item">
+            <span class="contact-item-label">Email</span>
+            <span class="contact-item-value"><a href={`mailto:${CONTACT.email}`}>{CONTACT.email}</a></span>
+          </div>
+          <div class="contact-item">
+            <span class="contact-item-label">GitHub</span>
+            <span class="contact-item-value"><a href={CONTACT.github} target="_blank" rel="noopener">{CONTACT.githubLabel}</a></span>
+          </div>
+          <div class="contact-item">
+            <span class="contact-item-label">LinkedIn</span>
+            <span class="contact-item-value"><a href={CONTACT.linkedin} target="_blank" rel="noopener">{CONTACT.linkedinLabel}</a></span>
+          </div>
+          <div class="contact-item">
+            <span class="contact-item-label">Location</span>
+            <span class="contact-item-value">Nigeria · Available Remotely</span>
+          </div>
+          <div class="contact-item">
+            <span class="contact-item-label">Response time</span>
+            <span class="contact-item-value">Within 48 hours</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

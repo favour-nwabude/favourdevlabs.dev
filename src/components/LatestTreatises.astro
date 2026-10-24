@@ -1,0 +1,40 @@
+---
+import { getPublished, formatDate } from '../lib/treatises';
+
+const posts = (await getPublished()).slice(0, 3);
+---
+
+<section id="treatises">
+  <div class="container">
+    <div class="section-header">
+      <p class="section-label">Treatises</p>
+      <h2>Systems, from first principles</h2>
+      <p class="treatises-lede">Android internals, Linux and the JVM, broken down in plain language.</p>
+    </div>
+    {
+      posts.length > 0 ? (
+        <>
+          <ul class="treatise-feed">
+            {posts.map((post) => (
+              <li>
+                <a href={`/treatises/${post.id}/`}>
+                  <span class="feed-meta">
+                    <span>{formatDate(post.data.pubDate)}</span>
+                    {post.data.draft && <span class="badge">Draft</span>}
+                  </span>
+                  <span class="feed-title">{post.data.title}</span>
+                  <span class="feed-desc">{post.data.description}</span>
+                </a>
+              </li>
+            ))}
+          </ul>
+          <p class="latest-more">
+            <a class="work-link" href="/treatises/">All treatises</a>
+          </p>
+        </>
+      ) : (
+        <p class="feed-empty">The first treatise is being written.</p>
+      )
+    }
+  </div>
+</section>

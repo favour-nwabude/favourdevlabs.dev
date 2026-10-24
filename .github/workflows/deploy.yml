@@ -1,4 +1,4 @@
-name: Deploy Cleanthes Treatises to GitHub Pages
+name: Deploy favourdevlabs.dev to GitHub Pages
 
 on:
   push:

@@ -2,6 +2,7 @@
 title: 'ANDROID DEVELOPMENT: DEMYSTIFYING THE SYSTEM RUNTIME FROM FIRST PRINCIPLES'
 description: 'Stripping away framework abstractions to explain AOSP, Zygote process initialization, Binder IPC, and ART memory mechanics in plain, uncompromised terms.'
 pubDate: '2026-10-10'
+draft: true
 heroImage: './hero.svg'
 tags: ['android', 'internals', 'aosp', 'linux', 'jvm']
 ---

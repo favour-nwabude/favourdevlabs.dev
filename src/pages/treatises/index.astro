@@ -1,56 +1,43 @@
 ---
-import BaseHead from '../../components/BaseHead.astro';
-import Header from '../../components/Header.astro';
-import Footer from '../../components/Footer.astro';
-import { SITE_TITLE, SITE_DESCRIPTION } from '../../consts';
-import { getCollection } from 'astro:content';
-import FormattedDate from '../../components/FormattedDate.astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getPublished, formatDate, readingMinutes } from '../../lib/treatises';
 
-const posts = (await getCollection('treatises')).sort(
-	(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
-);
+const posts = await getPublished();
 ---
 
-<!doctype html>
-<html lang="en">
-	<head>
-		<BaseHead title={`Treatises — ${SITE_TITLE}`} description={SITE_DESCRIPTION} />
-	</head>
-	<body>
-		<Header />
-		<main>
-			<section class="stoic-hero">
-				<blockquote class="stoic-quote">
-					"DO NOT ACT AS IF YOU WERE GOING TO LIVE TEN THOUSAND YEARS. DEATH HANGS OVER YOU. WHILE YOU LIVE, WHILE IT IS IN YOUR POWER, BE GOOD."
-					<footer>— MARCUS AURELIUS</footer>
-				</blockquote>
-				<h1>Systems Treatises</h1>
-				<p class="mission-statement">
-					OUR TREATISES EXIST TO BREAK COMPLEX SYSTEMS DOWN TO FIRST PRINCIPLES. WE STRIP AWAY INDUSTRIAL JARGON, OBFUSCATION, AND PRETENSION TO EXPLAIN LOW-LEVEL ARCHITECTURE IN PLAIN, ACCESSIBLE LANGUAGE.
-				</p>
-			</section>
+<BaseLayout
+  title="Treatises — FavourDevLabs"
+  description="Android internals, Linux and the JVM, broken down to first principles in plain language."
+>
+  <header class="page-head">
+    <p class="section-label">Treatises</p>
+    <h1>Systems, from first principles</h1>
+    <p class="treatises-lede">
+      Android internals, Linux and the JVM, broken down in plain language.
+    </p>
+    <p class="feed-links"><a class="work-link" href="/rss.xml">Subscribe by RSS</a></p>
+  </header>
 
-			<hr />
-
-			<section>
-				<ul class="treatise-archive-list">
-					{
-						posts.map((post) => (
-							<li>
-								<div class="post-meta">
-									<FormattedDate date={post.data.pubDate} />
-								</div>
-								<a href={`/treatises/${post.id}/`}>
-									<h2 class="post-title">{post.data.title}</h2>
-								</a>
-								<p class="post-desc">{post.data.description}</p>
-							</li>
-						))
-					}
-				</ul>
-			</section>
-		</main>
-		<Footer />
-	</body>
-</html>
-
+  {
+    posts.length > 0 ? (
+      <ul class="treatise-feed">
+        {posts.map((post) => (
+          <li>
+            <a href={`/treatises/${post.id}/`}>
+              <span class="feed-meta">
+                <span>{formatDate(post.data.pubDate)}</span>
+                <span>{readingMinutes(post.body)} min read</span>
+                {post.data.tags.length > 0 && <span>{post.data.tags.join(' · ')}</span>}
+                {post.data.draft && <span class="badge">Draft</span>}
+              </span>
+              <span class="feed-title">{post.data.title}</span>
+              <span class="feed-desc">{post.data.description}</span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    ) : (
+      <p class="feed-empty">The first treatise is being written.</p>
+    )
+  }
+</BaseLayout>

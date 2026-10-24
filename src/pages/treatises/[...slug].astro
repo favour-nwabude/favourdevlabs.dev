@@ -1,20 +1,30 @@
 ---
-import { type CollectionEntry, getCollection, render } from 'astro:content';
-import BlogPost from '../../layouts/BlogPost.astro';
+import { render } from 'astro:content';
+import TreatiseLayout from '../../layouts/TreatiseLayout.astro';
+import { getPublished, readingMinutes } from '../../lib/treatises';
 
 export async function getStaticPaths() {
-	const posts = await getCollection('treatises');
-	return posts.map((post) => ({
-		params: { slug: post.id },
-		props: post,
-	}));
+  const posts = await getPublished();
+  return posts.map((post, i) => ({
+    params: { slug: post.id },
+    props: {
+      post,
+      newer: posts[i - 1] && { id: posts[i - 1].id, title: posts[i - 1].data.title },
+      older: posts[i + 1] && { id: posts[i + 1].id, title: posts[i + 1].data.title },
+    },
+  }));
 }
-type Props = CollectionEntry<'treatises'>;
 
-const post = Astro.props;
+const { post, newer, older } = Astro.props;
 const { Content } = await render(post);
 ---
 
-<BlogPost {...post.data}>
-	<Content />
-</BlogPost>
+<TreatiseLayout
+  id={post.id}
+  {...post.data}
+  minutes={readingMinutes(post.body)}
+  newer={newer}
+  older={older}
+>
+  <Content />
+</TreatiseLayout>
