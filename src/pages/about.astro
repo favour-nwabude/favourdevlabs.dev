@@ -1,50 +1,46 @@
 ---
-import BaseHead from '../components/BaseHead.astro';
-import Header from '../components/Header.astro';
-import Footer from '../components/Footer.astro';
+import BaseLayout from '../layouts/BaseLayout.astro';
 ---
 
-<!doctype html>
-<html lang="en">
-	<head>
-		<BaseHead title="About & Specs — Favour Nwabude" description="Android Systems Consultant profile, Termux development environment, and core technical discipline." />
-	</head>
-	<body>
-		<Header />
-		<main>
-			<section class="stoic-hero">
-				<blockquote class="stoic-quote">
-					"WELL-BEING IS REALIZED BY SMALL STEPS, BUT IS TRULY NO SMALL THING ITSELF."
-					<footer>— ZENO OF CITIUM</footer>
-				</blockquote>
-				<h1>Favour Nwabude</h1>
-				<p class="subtitle">ANDROID CONSULTANT | SYSTEMS ENGINEER</p>
-			</section>
+<BaseLayout
+  title="About — Favour Nwabude, Android consultant"
+  description="Android consultant in Nigeria, working remotely. I focus on how Android apps protect keys, sessions and data on a device they do not control."
+>
+  <header class="page-head">
+    <p class="section-label">About</p>
+    <h1>Favour Nwabude</h1>
+    <p class="treatises-lede">
+      An Android consultant in Nigeria, working remotely. My focus is how an Android app protects
+      keys, sessions and data on a device it does not control.
+    </p>
+  </header>
 
-			<hr />
+  <div class="prose">
+    <h2>I build and test on a phone, and it makes me read the toolchain</h2>
+    <p>
+      I work inside a Linux container on my phone (Termux and Ubuntu) with Neovim, Git and Gradle. No
+      laptop, no IDE. It forces me to understand the toolchain instead of trusting it. For a client,
+      that means I read the code and the platform source, reproduce behaviour on a real device, and
+      write down what I verified and what I could not.
+    </p>
 
-			<section>
-				<h2>OPERATING SPECIFICATIONS</h2>
-				<p>
-					I am an Android consultant and systems engineer. Over three years, I have engineered production Android software, performed low-level debugging, and audited security codebases entirely on-device using custom mobile terminal environments—without relying on traditional IDE bloat or external desktop hardware.
-				</p>
-				<p>
-					This discipline enforces an intimate understanding of Linux system calls, POSIX environments, build toolchains, and runtime memory limits.
-				</p>
-			</section>
+    <h2>Three years of production Android, learned from security-focused code</h2>
+    <p>
+      Over three years I have built production Android applications entirely on-device, studying
+      security-focused codebases from the ground up and applying those patterns to real work.
+      Cleanthes is my main project.
+    </p>
 
-			<hr />
+    <h2>I publish what I can verify</h2>
+    <p>
+      I write treatises on Android internals, Linux and the JVM. Each one names the version I checked
+      against and how to reproduce it.
+    </p>
+  </div>
 
-			<section>
-				<h2>ENVIRONMENT & TOOLCHAIN</h2>
-				<ul class="discipline-list">
-					<li><strong>Primary Host Environment:</strong> Containerized Termux (`pd-ubuntu`) running on ARM64 Linux hardware.</li>
-					<li><strong>Code & Compilation Toolchain:</strong> Neovim, Git, Node.js v22.23.3, Astro 5, Kotlin JVM Toolchain, and Gradle.</li>
-					<li><strong>Consulting Direct Path:</strong> Available globally for architecture audits, performance tuning, and low-level Android fixes.</li>
-				</ul>
-			</section>
-		</main>
-		<Footer />
-	</body>
-</html>
-
+  <footer class="treatise-end">
+    <div class="treatise-cta">
+      <a class="work-link" href="/#contact">Start a conversation</a>
+    </div>
+  </footer>
+</BaseLayout>

@@ -1,62 +1,108 @@
 ---
-import BaseHead from '../../components/BaseHead.astro';
-import Header from '../../components/Header.astro';
-import Footer from '../../components/Footer.astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
 ---
 
-<!doctype html>
-<html lang="en">
-	<head>
-		<BaseHead title="Cleanthes — Hardened Android Vault Architecture" description="A security-focused, modular Android credential manager engineered with hardware attestation and Zero-Trust session lifecycles." />
-	</head>
-	<body>
-		<Header />
-		<main>
-			<section class="stoic-hero">
-				<blockquote class="stoic-quote">
-					"FATE LEADS THE WILLING, AND DRAGS ALONG THE RELUCTANT."
-					<footer>— CLEANTHES</footer>
-				</blockquote>
-				<h1>Cleanthes Application Showcase</h1>
-				<p class="subtitle">HARDENED SECURITY VAULT | MULTI-MODULE ARCHITECTURE | ZERO-TRUST LIFECYCLE</p>
-			</section>
+<BaseLayout
+  title="Cleanthes: an Android password manager, built in the open — FavourDevLabs"
+  description="A security case study: how Cleanthes protects keys, sessions and data on Android, what it sends over the network, and what it does not protect."
+>
+  <header class="page-head">
+    <p class="section-label">Case study</p>
+    <h1>Cleanthes</h1>
+    <p class="treatises-lede">
+      An Android password manager I build as a security case study. The source is public, so every
+      claim below points at code you can read, and I state what it does not protect.
+    </p>
+  </header>
 
-			<hr />
+  <div class="prose">
+    <h2>One random key encrypts the vault, and your password only wraps it</h2>
+    <p>
+      When you create a vault, Cleanthes generates a random 256-bit key. Entry fields are encrypted
+      with it using AES-GCM, with a fresh random 12-byte nonce each time. Your master password never
+      encrypts data directly. Password unlock and biometric unlock are two independent ways to unwrap
+      the same vault key.
+    </p>
 
-			<section>
-				<h2>EXECUTIVE OVERVIEW</h2>
-				<p>
-					<strong>Cleanthes</strong> is a native Android credential vault and security-focused management application built from first principles. Designed for zero-trust security environments, it combines hardware-backed biometric attestation, isolated session lifecycles, and modern Jetpack Compose UI rendering without sacrificing low-level performance or runtime safety.
-				</p>
-			</section>
+    <h2>The master password is stretched 310,000 times first</h2>
+    <p>
+      PBKDF2-HMAC-SHA256 with 310,000 iterations and a 256-bit output, using random 16-byte salts. The
+      hash that verifies a login and the key that wraps the vault key use separate salts.
+    </p>
 
-			<hr />
+    <h2>Biometric unlock is bound to a hardware-backed key, not just a prompt</h2>
+    <p>
+      The biometric path wraps the vault key under an Android Keystore AES-256 key that requires user
+      authentication. The prompt accepts strong biometrics only, and the vault key cannot be unwrapped
+      unless the prompt returns the unlocked cipher. Hardware backing depends on the device, and
+      Cleanthes does not require StrongBox.
+    </p>
+    <p>
+      Autofill is weaker by design. It asks for a biometric confirmation on top of an already unlocked
+      session. That is an identity check, not a cryptographic one.
+    </p>
 
-			<section>
-				<h2>MODULAR SYSTEM GRAPH</h2>
-				<p>
-					The application enforces strict architectural boundaries using a decoupled feature-and-core module graph. This prevents feature bleed and ensures compile-time dependency isolation:
-				</p>
-				<ul class="discipline-list">
-					<li><strong>:core:security & :attestation:</strong> Hardware-backed cryptographic keys, Android KeyStore abstraction, and runtime attestation validation.</li>
-					<li><strong>:core:security:session:</strong> Isolated session lifecycles managing memory-wipe mechanisms for raw credentials upon lock trigger.</li>
-					<li><strong>:core:data & :domain:</strong> Room 2.7 persistence layer managed via Symbol Processing (KSP) with encrypted at-rest database instances.</li>
-					<li><strong>:feature:autofill & :auditlog:</strong> Native Android Autofill Framework integration, audit logging, export pipelines, and biometrically protected credentials.</li>
-				</ul>
-			</section>
+    <h2>The key is in memory only while the vault is unlocked</h2>
+    <p>
+      A session manager holds it. The app locks after 30 seconds in the background or 2 minutes
+      without activity. Code reaches the key only through a scoped function that returns nothing when
+      the vault is locked, and the timers have unit tests.
+    </p>
+    <p>
+      Locking drops the reference. It does not overwrite the key bytes, and decrypted values are
+      ordinary Kotlin strings. Anything readable from process memory while the vault is unlocked is
+      exposed.
+    </p>
 
-			<hr />
+    <h2>Secret screens resist capture, and backups are off</h2>
+    <p>
+      Login, setup, the autofill prompt and the ten authenticated screens set the secure-window flag.
+      Screenshots and screen recording are blocked, and the content is hidden in the app switcher. App
+      backup is disabled. Release builds are minified and resource-shrunk with R8.
+    </p>
 
-			<section>
-				<h2>ENGINEERING SPECS & TOOLCHAIN</h2>
-				<ul class="discipline-list">
-					<li><strong>UI Pipeline:</strong> Declarative Jetpack Compose UI with unidirectional state flows and Hilt injection.</li>
-					<li><strong>Compiler & Runtime:</strong> Kotlin 2.2 toolchain, Java 17 JVM target, and KSP for compile-time code generation.</li>
-					<li><strong>Release Hardening:</strong> Proguard/R8 code minification, resource shrinking, and backup prevention (`allowBackup = false`).</li>
-				</ul>
-			</section>
-		</main>
-		<Footer />
-	</body>
-</html>
+    <h2>Two features make network requests, and each sends little</h2>
+    <p>
+      The favicon feature sends only a site's hostname to my own proxy, then caches the icon on the
+      device. The proxy therefore learns which sites you store logins for.
+    </p>
+    <p>
+      The breach check runs only when you tap it, after re-authentication. It sends the first five
+      characters of the password's SHA-1 hash to the Pwned Passwords range API with padding on, and
+      compares the rest on the device.
+    </p>
 
+    <h2>A device check that reports, and does not enforce</h2>
+    <p>
+      Settings shows whether the device's Keystore reports software, TEE or StrongBox security. It
+      generates a throwaway key, validates the certificate chain against Google's attestation roots
+      bundled in the app, and reads the security level and boot state from the certificate. It does not
+      gate unlocking, and it checks a probe key, not the vault key.
+    </p>
+    <p>
+      Known gaps: it does not compare the challenge, it does not read the device-locked flag, and
+      revocation checking is off.
+    </p>
+
+    <h2>What it does not protect</h2>
+    <p>
+      The category, timestamps, the favourite flag, and the TOTP issuer, digits, period and algorithm
+      are stored unencrypted. The database file as a whole is not encrypted, only individual fields.
+    </p>
+
+    <h2>How it is built</h2>
+    <p>
+      21 Gradle modules: feature modules, a domain layer, and api/impl splits for data, session and
+      attestation, with fakes for tests. Kotlin, Jetpack Compose, Hilt, Room 2.7 with exported schemas
+      and migrations, Java 17.
+    </p>
+  </div>
+
+  <footer class="treatise-end">
+    <div class="treatise-cta">
+      <p>Want an independent review of your own app's key handling?</p>
+      <a class="work-link" href="/#contact">Start a conversation</a>
+    </div>
+    <a class="work-link external" href="https://github.com/FavourDevLabs/cleanthes" target="_blank" rel="noopener">Read the source on GitHub</a>
+  </footer>
+</BaseLayout>
