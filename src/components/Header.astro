@@ -5,7 +5,10 @@ import HeaderLink from "./HeaderLink.astro";
 
 <header class="site-header">
   <nav class="site-nav" aria-label="Primary">
-    <a class="nav-logo" href="/">{SITE_TITLE}</a>
+    <a class="nav-logo" href="/">
+      <img src="/favicon.svg" alt="" width="28" height="28" />
+      <span>{SITE_TITLE}</span>
+    </a>
     <ul class="nav-links">
       <li><HeaderLink href="/treatises/">Treatises</HeaderLink></li>
       <li><HeaderLink href="/apps/cleanthes/">Cleanthes</HeaderLink></li>

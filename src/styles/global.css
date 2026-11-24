@@ -43,7 +43,7 @@ hr { border: none; border-top: 1px solid var(--border); }
 /* --- Header ------------------------------------------------------------- */
 .site-header { position: sticky; top: 0; z-index: 100; background: rgba(9, 9, 10, 0.85); -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); }
 .site-nav { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.75rem 2rem; padding: 1.4rem 2rem; }
-.nav-logo { font-family: var(--mono); font-size: 0.8rem; letter-spacing: 0.15em; color: var(--gold); text-transform: uppercase; }
+.nav-logo { font-family: var(--mono); font-size: 0.8rem; letter-spacing: 0.15em; color: var(--gold); text-transform: uppercase; display: inline-flex; align-items: center; gap: 8px; }
 .nav-links { display: flex; flex-wrap: wrap; gap: 0.5rem 2.5rem; list-style: none; }
 .nav-links a { font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted-text); padding-bottom: 0.25rem; border-bottom: 1px solid transparent; transition: color 0.2s; }
 .nav-links a:hover { color: var(--light); opacity: 1; }
